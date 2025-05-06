@@ -1,28 +1,27 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
 	import CarListItemRef from "$lib/components/forms/CarListItemRef.svelte";
-	import type { carDetails } from "$lib/utils/api/carDetails";
-    import { fetchCars } from "$lib/utils/api/carDetails";
+	import { fetchReservationCars, type reservationCar } from "$lib/utils/api/reservation";
 	import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
 
-    let carsForReservation: carDetails[];
+    let reservations: reservationCar[];
     
     onMount(async () => {
-        carsForReservation = await fetchCars();
+        reservations = await fetchReservationCars();
     });
 </script>
 
 <div class="reservations__container">
     <div class="reservations__nav">
-        <button class="reservations__nav-item" on:click={() => {goto("/reserved")}}>
-            <img class="reservations__nav-icon" src="/icons/reservation.svg" alt="">
+        <button class="reservations__nav-item" on:click={() => {goto("/")}}>
+            <img class="reservations__nav-icon" src="/icons/calendars.svg" alt="">
         </button>
     </div>
     <div class="reservations__header">
-        Vehicles for reservation
+        Vehicle reservations
     </div>
     <div class="reservations__list">
-        {#each carsForReservation as carItem}
+        {#each reservations as carItem}
             <div class="reservations__list-item">
                 <CarListItemRef componentState={carItem}/>
             </div>
