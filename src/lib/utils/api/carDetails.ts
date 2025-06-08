@@ -25,7 +25,7 @@ function mapCarFromApi(apiCar: any): carDetails {
     };
 }
 
-export async function fetchCars(): Promise<carDetails[]> {
+export async function fetchCarsOld(): Promise<carDetails[]> {
     const response = await fetch("https://localhost:7153/api/cars");
 
     if (!response.ok) throw new Error(`Error fetching: ${response.status}`);
@@ -33,4 +33,14 @@ export async function fetchCars(): Promise<carDetails[]> {
     const data = await response.json();
     
     return data.map((apiCar: any) => mapCarFromApi(apiCar));
+}
+
+export async function fetchCars(): Promise<carDetails[]> {
+    const response = await fetch("https://localhost:7153/api/cars");
+
+    if (!response.ok) throw new Error(`Error fetching: ${response.status}`);
+
+    const data = await response.json();
+    
+    return data._embedded.getCarDTOList.map((apiCar: any) => mapCarFromApi(apiCar));
 }

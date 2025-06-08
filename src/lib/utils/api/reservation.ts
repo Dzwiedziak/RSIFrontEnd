@@ -84,3 +84,12 @@ export async function updateReservation(reservationId: number, period: Period) {
 
     if(!response.ok) throw new Error(`Error patching data ${response.status}`);
 }
+
+
+export async function removeReservation(reservationId: number) {
+    const response = await fetch(`https://localhost:7153/api/reservations/${reservationId}`, {
+        method: "DELETE"
+    });
+
+    if(!response.ok) throw new Error(`Error deleting object ${response.status}`);
+} 

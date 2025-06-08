@@ -4,14 +4,14 @@
     import type { carDetails } from "$lib/utils/api/carDetails";
 	import { Period } from "$lib/utils/date/period";
 	import { Time } from "$lib/utils/date/time";
-	import { reserveCar, updateReservation, type reservationCar } from "$lib/utils/api/reservation";
+	import { removeReservation, reserveCar, updateReservation, type reservationCar } from "$lib/utils/api/reservation";
     import { goto } from '$app/navigation';
 
     type SectionState = 'info' | 'reservation';
 
     const switchSectionBtnStr = {
-        'info': 'Show info',
-        'reservation': 'Reserve vehicle'
+        'info': 'Calendar',
+        'reservation': 'Go to Info'
     }
 
     export let componentState: reservationCar | carDetails;
@@ -147,6 +147,11 @@
             <button class="car-li__section-btn car-li__section-switch-btn" on:click={() => switchSectionState()}>
                 {switchSectionBtnStr[sectionState]}
             </button>
+            {#if reservationId !== null}
+                <button class="car-li__section-btn car-li__section-delete-btn" on:click={async () => await removeReservation(reservationId!)}>
+                    Unreserve
+                </button>
+            {/if}
             {#if sectionState === 'reservation'}
                 <button class="car-li__section-btn car-li__section-reserve-btn" on:click={() => onReserveBtnClick()}
                     class:car-li__section-reserve-btn--disabled={isReserveBtnDisabled} disabled={isReserveBtnDisabled}>
@@ -220,6 +225,9 @@
         background-color: #92d18a;
     }
     .car-li__section-switch-btn {
+        background-color: red;
+    }
+    .car-li__section-delete-btn {
         background-color: red;
     }
     .car-li__reserve-section {
